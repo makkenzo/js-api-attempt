@@ -106,7 +106,7 @@ const getWeather = async () => {
     if (data['weather'][0]['main'] in emojis) {
         tempIcon.textContent = emojis[data['weather'][0]['main']];
     } else {
-        tempIcon.textContent = 'Смайлика нет :(';
+        tempIcon.textContent = 'null';
     }
 
     temp.textContent = `${Math.round(data['main'].temp - 273.15)}°C`;
@@ -117,7 +117,6 @@ const getWeather = async () => {
 };
 
 const cityInpValue = localStorage.getItem('cityInput');
-console.log(cityInpValue);
 city.value = cityInpValue;
 
 const clock = () => {
