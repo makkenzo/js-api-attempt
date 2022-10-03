@@ -1,7 +1,8 @@
 const quotesUrl = 'https://type.fit/api/quotes';
 
-let city = document.getElementById('city').value;
-let openWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=8994e6cb46263cfa3b7e4229e788eea1`;
+let city = document.getElementById('city');
+
+let openWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city.value}&appid=8994e6cb46263cfa3b7e4229e788eea1`;
 
 emojis = {
     Clear: '☀️',
@@ -89,8 +90,9 @@ const getData = async () => {
 };
 
 const getWeather = async () => {
-    city = document.getElementById('city').value;
-    openWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=8994e6cb46263cfa3b7e4229e788eea1`;
+    localStorage.setItem('cityInput', city.value);
+
+    openWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city.value}&appid=8994e6cb46263cfa3b7e4229e788eea1`;
 
     const res = await fetch(openWeatherUrl);
     const data = await res.json();
@@ -113,6 +115,10 @@ const getWeather = async () => {
     wind.textContent = ` Wind speed: ${data['wind'].speed} m/s`;
     humidity.textContent = `Humidity: ${data['main'].humidity}%`;
 };
+
+const cityInpValue = localStorage.getItem('cityInput');
+console.log(cityInpValue);
+city.value = cityInpValue;
 
 const clock = () => {
     const today = new Date();
