@@ -230,6 +230,16 @@ for (let j = 0; j < li_s.length; j++) {
     $(element).attr('onclick', `selectSong(${j})`);
 }
 
+let input = document.getElementById('int');
+input.value = '';
+
+const localStorageFunc = () => {
+    localStorage.setItem('input', input.value);
+};
+
+const inpValue = localStorage.getItem('input');
+input.value = inpValue;
+
 clock();
 getWeather();
 getData();
