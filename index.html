@@ -12,9 +12,9 @@
         <header class="header">
             <div class="player">
                 <div class="player-controls">
-                    <button class="play-prev player-icon"></button>
+                    <button class="play-prev player-icon" onclick="previousSong()"></button>
                     <button class="play player-icon" id="play" onclick="playSong()" data-aria=""></button>
-                    <button class="play-next player-icon"></button>
+                    <button class="play-next player-icon" onclick="nextSong()"></button>
                 </div>
                 <ul class="play-list" id="play-list"></ul>
             </div>
@@ -32,14 +32,14 @@
         </header>
         <main class="main">
             <div class="slider-icons">
-                <button class="slide-prev slider-icon"></button>
-                <button class="slide-next slider-icon"></button>
+                <button class="slide-prev slider-icon" onclick="prevSlide()"></button>
+                <button class="slide-next slider-icon" onclick="nextSlide()"></button>
             </div>
             <time class="time" id="time"></time>
             <date class="date" id="date"></date>
             <div class="greeting-container">
                 <span class="greeting" id="greeting"></span>
-                <input type="text" class="name" />
+                <input type="text" class="name" id="int" />
             </div>
         </main>
         <footer class="footer">

@@ -4,10 +4,10 @@ let city = document.getElementById('city').value;
 let openWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=8994e6cb46263cfa3b7e4229e788eea1`;
 
 emojis = {
-    Clear: '☀',
-    Clouds: '☁',
+    Clear: '☀️',
+    Clouds: '☁️',
     Rain: '⛆',
-    Drizzle: '☔',
+    Drizzle: '☔️',
     Thunderstorm: '⛈',
     Snow: '🌨',
     Mist: '🌫',
@@ -38,7 +38,7 @@ months = {
     11: 'December',
 };
 
-sounds = [
+let sounds = [
     {
         name: 'Aqua Caelestis',
         path: 'assets/sounds/AquaCaelestis.mp3',
@@ -54,6 +54,24 @@ sounds = [
     {
         name: 'Summer Wind',
         path: 'assets/sounds/SummerWind.mp3',
+    },
+];
+
+let slides = [
+    {
+        bgImg: 'assets/img/bg1.jpg',
+    },
+    {
+        bgImg: 'assets/img/bg2.jpg',
+    },
+    {
+        bgImg: 'assets/img/bg3.jpg',
+    },
+    {
+        bgImg: 'assets/img/bg4.jpg',
+    },
+    {
+        bgImg: 'assets/img/bg5.jpg',
     },
 ];
 
@@ -83,11 +101,6 @@ const getWeather = async () => {
     let wind = document.getElementById('wind');
     let humidity = document.getElementById('humidity');
 
-    // document.getElementById('city').value = localStorage.key('city');
-
-    // localStorage.removeItem('city');
-    // localStorage.setItem(city, 'city');
-
     if (data['weather'][0]['main'] in emojis) {
         tempIcon.textContent = emojis[data['weather'][0]['main']];
     } else {
@@ -97,7 +110,7 @@ const getWeather = async () => {
     temp.textContent = `${Math.round(data['main'].temp - 273.15)}°C`;
     tempDesc.textContent = data['weather'][0].description;
 
-    wind.textContent = `Wind speed: ${data['wind'].speed} m/s`;
+    wind.textContent = ` Wind speed: ${data['wind'].speed} m/s`;
     humidity.textContent = `Humidity: ${data['main'].humidity}%`;
 };
 
@@ -138,43 +151,58 @@ const checkTime = (i) => {
 };
 
 let isPlaying = false;
+let sound = document.createElement('audio');
+let song_index = 0;
 
-// const play = (i) => {
-//     let player = document.getElementById('play');
-//     $(player).attr("onclick", "playSong(i)")
-// };
+function playAudio() {
+    sound.play();
+    isPlaying = true;
+}
 
-let i = 0;
-let k = 0;
+function pauseAudio() {
+    sound.pause();
+    isPlaying = false;
+}
 
-// const playSong = (num) => {
-// let audio = new Howl({
-//     src: [sounds[i].path],
-//     autoplay: false,
-// });
+function playSong() {
+    let pause = document.getElementById('play');
+    pause.style.backgroundImage = "url('assets/svg/play.svg')";
 
-// let player = document.getElementById('play');
+    sound.paused ? playAudio() : pauseAudio();
+    sound.paused
+        ? (pause.style.backgroundImage = "url('assets/svg/play.svg')")
+        : (play.style.backgroundImage = "url('assets/svg/pause.svg')");
+}
 
-// if (!isPlaying) {
-//     player.classList.add('pause');
-//     audio.play();
-//     isPlaying = true;
-// } else {
-//     player.classList.remove('pause');
-//     audio.pause();
-//     isPlaying = false;
-// }
-//     console.log(num);
-// };
+function nextSong() {
+    if (song_index < sounds.length - 1) song_index += 1;
+    else song_index = 0;
+    selectSong(song_index);
+    playAudio();
+}
 
-// sounds.forEach((element) => {
-//     let song = document.createElement('li');
-//     song.classList.add('play-item');
-//     song.textContent = element.name;
+function previousSong() {
+    if (song_index > 0) song_index -= 1;
+    else song_index = sounds.length - 1;
+    selectSong(song_index);
+    playAudio();
+}
 
-//     document.getElementById('play-list').append(song);
-//     i++;
-// });
+let slide_index = 0;
+let slide = document.body;
+slide.style.background = 'url(' + slides[slide_index].bgImg + ') center/cover, rgba(0, 0, 0, 0.5)';
+
+function nextSlide() {
+    if (slide_index < slides.length - 1) slide_index += 1;
+    else slide_index = 0;
+    slide.style.background = 'url(' + slides[slide_index].bgImg + ') center/cover, rgba(0, 0, 0, 0.5)';
+}
+
+function prevSlide() {
+    if (slide_index > 0) slide_index -= 1;
+    else slide_index = slide.length - 1;
+    slide.style.background = 'url(' + slides[slide_index].bgImg + ') center/cover, rgba(0, 0, 0, 0.5)';
+}
 
 let li_s = [];
 
@@ -189,16 +217,18 @@ sounds.forEach((element) => {
     li_s.push(li);
 });
 
-const selectSong = (num) => {
-    console.log(num);
-};
+function selectSong(song_index) {
+    console.log(song_index);
+    sound.src = sounds[song_index].path;
+    sound.load();
+    isPlaying = true;
+    playAudio();
+}
 
 for (let j = 0; j < li_s.length; j++) {
     const element = li_s[j];
     $(element).attr('onclick', `selectSong(${j})`);
 }
-
-// console.log(ul);
 
 clock();
 getWeather();
